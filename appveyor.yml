@@ -48,14 +48,14 @@ build_script:
 test: off
 
 after_test:
-  - dotnet pack "src\Bibliotheca.Server.Mvc.Middleware.Authorization" -c %CONFIGURATION% --output=".\Nuget"
-  - dotnet pack "src\Bibliotheca.Server.Mvc.Middleware.Diagnostics" -c %CONFIGURATION% --output=".\Nuget"
+  - dotnet pack "src\Bibliotheca.Server.Mvc.Middleware.Authorization" -c %CONFIGURATION%
+  - dotnet pack "src\Bibliotheca.Server.Mvc.Middleware.Diagnostics" -c %CONFIGURATION%
 
 deploy:
   provider: NuGet
   api_key: 
     secure: 14y7GJ6bBi+ePi58Xz7W6FNbPEaRkAvncBJZRccMmBhq00Jct5nWcCpRjd21aHUR
-  artifact: .\Nuget\*.nupkg
+  artifact: /.*\.nupkg/
   on:
     branch:
       - master
