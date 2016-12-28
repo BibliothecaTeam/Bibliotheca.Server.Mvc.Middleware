@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 
-namespace Bibliotheca.Server.Mvc.Middleware.Diagnostics
+namespace Bibliotheca.Server.Mvc.Middleware.Diagnostics.Exceptions
 {
     public static class ExceptionHandlerAppBuilderExtension
     {

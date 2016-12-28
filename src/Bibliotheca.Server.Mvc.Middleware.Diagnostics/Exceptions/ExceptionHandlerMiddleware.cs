@@ -8,7 +8,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Bibliotheca.Server.Mvc.Middleware.Diagnostics
+namespace Bibliotheca.Server.Mvc.Middleware.Diagnostics.Exceptions
 {
     public class ExceptionHandlerMiddleware
     {
@@ -29,7 +29,7 @@ namespace Bibliotheca.Server.Mvc.Middleware.Diagnostics
             {
                 await _next(httpContext);
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 if (httpContext.Response.HasStarted)
                 {
@@ -37,7 +37,15 @@ namespace Bibliotheca.Server.Mvc.Middleware.Diagnostics
                     throw;
                 }
 
-                httpContext.Response.StatusCode = (int) HttpStatusCode.BadRequest;
+                if (exception is NotFoundException)
+                {
+                    httpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                }
+                else
+                {
+                    httpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                }
+
                 httpContext.Response.OnStarting(ClearCacheHeaders, httpContext.Response);
 
                 AddExceptionToLogger(exception);
