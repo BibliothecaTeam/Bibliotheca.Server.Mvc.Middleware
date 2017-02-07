@@ -5,10 +5,6 @@ namespace Bibliotheca.Server.Mvc.Middleware.Authorization
 {
     public static class BearerAppBuilderExtensions
     {
-
-
-
-
         public static IApplicationBuilder UseBearerAuthentication(this IApplicationBuilder applicationBuilder, JwtBearerOptions options)
         {
             if (options == null)
