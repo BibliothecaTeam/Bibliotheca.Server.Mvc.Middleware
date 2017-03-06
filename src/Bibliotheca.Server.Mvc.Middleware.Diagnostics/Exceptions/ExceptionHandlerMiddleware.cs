@@ -81,7 +81,16 @@ namespace Bibliotheca.Server.Mvc.Middleware.Diagnostics.Exceptions
         {
             try
             {
-                _logger.LogError("Exceptions occurs", exception);
+                _logger.LogError($"Exception '{exception.GetType().FullName}' occurs.");
+                _logger.LogError($"Exception message: {exception.Message}");
+                _logger.LogError($"Exception stack trace {exception.StackTrace}");
+                
+                if(exception.InnerException != null) 
+                {
+                    _logger.LogError($"Inner exception '{exception.GetType().FullName}' occurs.");
+                    _logger.LogError($"Inner exception message: {exception.Message}");
+                    _logger.LogError($"Inner exception stack trace {exception.StackTrace}");
+                }
             }
             catch { }
         }
