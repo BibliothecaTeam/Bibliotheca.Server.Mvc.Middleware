@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
@@ -11,6 +10,7 @@ using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Http.Features.Authentication;
 using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Bibliotheca.Server.Mvc.Middleware.Authorization.UserTokenAuthentication
 {
@@ -36,12 +36,14 @@ namespace Bibliotheca.Server.Mvc.Middleware.Authorization.UserTokenAuthenticatio
                 return AuthenticateResult.Skip();
             }
 
-            if(string.IsNullOrWhiteSpace(Options.AuthorizationUrl))
+            var contextOptions = Context.RequestServices.GetService<IUserTokenConfiguration>();
+            var authorizationUrl = contextOptions.GetAuthorizationUrl();
+            if(string.IsNullOrWhiteSpace(authorizationUrl))
             {
                 return AuthenticateResult.Fail($"{Options.AuthenticationScheme} authentication failed. Authorization server was not specified.");
             }
 
-            var user = await GetUserByTokenAsync(token);
+            var user = await GetUserByTokenAsync(token, authorizationUrl);
             if (user != null)
             {
                 var identity = new ClaimsIdentity(Options.AuthenticationScheme, ClaimTypes.Name, ClaimTypes.Role);
@@ -71,12 +73,12 @@ namespace Bibliotheca.Server.Mvc.Middleware.Authorization.UserTokenAuthenticatio
             return false;
         }
 
-        private async Task<UserDto> GetUserByTokenAsync(string token)
+        private async Task<UserDto> GetUserByTokenAsync(string token, string authorizationUrl)
         {
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Add("UserToken", token);
 
-            var address = Path.Combine(Options.AuthorizationUrl, "accessToken");
+            var address = Path.Combine(authorizationUrl, "accessToken");
             var response = await client.GetAsync(address);
 
             if(response.StatusCode == HttpStatusCode.OK)

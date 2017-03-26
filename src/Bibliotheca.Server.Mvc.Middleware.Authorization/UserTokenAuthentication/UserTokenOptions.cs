@@ -11,8 +11,6 @@ namespace Bibliotheca.Server.Mvc.Middleware.Authorization.UserTokenAuthenticatio
             AutomaticChallenge = true;
         }
 
-        public string AuthorizationUrl { get; set; }
-
         public string Realm { get; set; }
     }
 }
