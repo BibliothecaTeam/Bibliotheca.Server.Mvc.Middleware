@@ -1,4 +1,4 @@
-namespace Bibliotheca.Server.Mvc.Middleware.Authorization
+namespace Bibliotheca.Server.Mvc.Middleware.Authorization.SecureTokenAuthentication
 {
     public static class SecureTokenDefaults
     {

@@ -1,4 +1,8 @@
 using System;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
@@ -6,10 +10,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Http.Features.Authentication;
 using Microsoft.Net.Http.Headers;
+using Newtonsoft.Json;
 
-namespace Bibliotheca.Server.Mvc.Middleware.Authorization.SecureTokenAuthentication
+namespace Bibliotheca.Server.Mvc.Middleware.Authorization.UserTokenAuthentication
 {
-    public class SecureTokenHandler : AuthenticationHandler<SecureTokenOptions>
+    public class UserTokenHandler : AuthenticationHandler<UserTokenOptions>
     {
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
@@ -31,12 +36,12 @@ namespace Bibliotheca.Server.Mvc.Middleware.Authorization.SecureTokenAuthenticat
                 return AuthenticateResult.Skip();
             }
 
-            bool isValid = ValidateToken(token);
-            if (isValid)
+            var user = await GetUserByTokenAsync(token);
+            if (user != null)
             {
                 var identity = new ClaimsIdentity(Options.AuthenticationScheme, ClaimTypes.Name, ClaimTypes.Role);
-                identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, "SystemId"));
-                identity.AddClaim(new Claim(ClaimTypes.Name, "System"));
+                identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id));
+                identity.AddClaim(new Claim(ClaimTypes.Name, user.Name));
 
                 ClaimsPrincipal principal = new ClaimsPrincipal(identity);
 
@@ -61,9 +66,22 @@ namespace Bibliotheca.Server.Mvc.Middleware.Authorization.SecureTokenAuthenticat
             return false;
         }
 
-        private bool ValidateToken(string token)
+        private async Task<UserDto> GetUserByTokenAsync(string token)
         {
-            return Options.SecureToken.Equals(token, StringComparison.CurrentCultureIgnoreCase);
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("UserToken", token);
+
+            var address = Path.Combine(Options.AuthorizationUrl, "accessToken");
+            var response = await client.GetAsync(address);
+
+            if(response.StatusCode == HttpStatusCode.OK)
+            {
+                var responseString = await response.Content.ReadAsStringAsync();
+                var user = JsonConvert.DeserializeObject<UserDto>(responseString);
+                return user;
+            }
+
+            return null;
         }
     }
 }

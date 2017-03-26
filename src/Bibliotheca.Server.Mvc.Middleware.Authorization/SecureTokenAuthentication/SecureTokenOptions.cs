@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 
-namespace Bibliotheca.Server.Mvc.Middleware.Authorization
+namespace Bibliotheca.Server.Mvc.Middleware.Authorization.SecureTokenAuthentication
 {
     public class SecureTokenOptions : AuthenticationOptions
     {

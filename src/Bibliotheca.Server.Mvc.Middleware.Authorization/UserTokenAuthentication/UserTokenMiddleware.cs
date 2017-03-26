@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Bibliotheca.Server.Mvc.Middleware.Authorization.SecureTokenAuthentication
+namespace Bibliotheca.Server.Mvc.Middleware.Authorization.UserTokenAuthentication
 {
-    public class SecureTokenMiddleware : AuthenticationMiddleware<SecureTokenOptions>
+    public class UserTokenMiddleware : AuthenticationMiddleware<UserTokenOptions>
     {
-        public SecureTokenMiddleware(RequestDelegate next, ILoggerFactory loggerFactory, UrlEncoder encoder, IOptions<SecureTokenOptions> options)
+        public UserTokenMiddleware(RequestDelegate next, ILoggerFactory loggerFactory, UrlEncoder encoder, IOptions<UserTokenOptions> options)
             : base(next, options, loggerFactory, encoder)
         {
             if (next == null)
@@ -33,9 +33,9 @@ namespace Bibliotheca.Server.Mvc.Middleware.Authorization.SecureTokenAuthenticat
             }
         }
 
-        protected override AuthenticationHandler<SecureTokenOptions> CreateHandler()
+        protected override AuthenticationHandler<UserTokenOptions> CreateHandler()
         {
-            return new SecureTokenHandler();
+            return new UserTokenHandler();
         }
     }
 }

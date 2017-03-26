@@ -2,7 +2,7 @@ using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Options;
 
-namespace Bibliotheca.Server.Mvc.Middleware.Authorization
+namespace Bibliotheca.Server.Mvc.Middleware.Authorization.SecureTokenAuthentication
 {
     public static class SecureTokenAppBuilderExtension
     {

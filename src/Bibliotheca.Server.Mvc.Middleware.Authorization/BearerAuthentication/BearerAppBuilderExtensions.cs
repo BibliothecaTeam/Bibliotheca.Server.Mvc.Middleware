@@ -1,7 +1,7 @@
 using System;
 using Microsoft.AspNetCore.Builder;
 
-namespace Bibliotheca.Server.Mvc.Middleware.Authorization
+namespace Bibliotheca.Server.Mvc.Middleware.Authorization.BearerAuthentication
 {
     public static class BearerAppBuilderExtensions
     {

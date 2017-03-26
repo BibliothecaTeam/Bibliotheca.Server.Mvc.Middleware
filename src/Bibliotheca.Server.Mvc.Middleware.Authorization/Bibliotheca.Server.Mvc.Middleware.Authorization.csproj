@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Authorization middlewares for Bibliotheca microservices.</Description>
+    <AssemblyTitle>Bibliotheca.Server.Mvc.Middleware.Authorization</AssemblyTitle>
+    <NeutralLanguage>C#</NeutralLanguage>
+    <VersionPrefix>1.0.4</VersionPrefix>
+    <Authors>@mczachurski</Authors>
+    <TargetFramework>netstandard1.6</TargetFramework>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugType>portable</DebugType>
+    <AssemblyName>Bibliotheca.Server.Mvc.Middleware.Authorization</AssemblyName>
+    <PackageId>Bibliotheca.Server.Mvc.Middleware.Authorization</PackageId>
+    <PackageProjectUrl>https://github.com/mczachurski/Bibliotheca.Server.Mvc.Middleware</PackageProjectUrl>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="1.1.1" />
+  </ItemGroup>
+
+</Project>
