@@ -47,8 +47,9 @@ namespace Bibliotheca.Server.Mvc.Middleware.Authorization.UserTokenAuthenticatio
             if (user != null)
             {
                 var identity = new ClaimsIdentity(Options.AuthenticationScheme, ClaimTypes.Name, ClaimTypes.Role);
-                identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id));
-                identity.AddClaim(new Claim(ClaimTypes.Name, user.Name));
+                identity.AddClaim(new Claim(ClaimTypes.GivenName, user.Name));
+                identity.AddClaim(new Claim(ClaimTypes.Name, user.Id));
+                identity.AddClaim(new Claim(ClaimTypes.Role, user.Role));
 
                 ClaimsPrincipal principal = new ClaimsPrincipal(identity);
 
