@@ -35,7 +35,6 @@ configuration: Release
 build: off
 
 before_build:
-before_build:
   - appveyor-retry dotnet restore "src\Bibliotheca.Server.Mvc.Middleware.Authorization" -v Minimal
   - appveyor-retry dotnet restore "src\Bibliotheca.Server.Mvc.Middleware.Diagnostics" -v Minimal
 
