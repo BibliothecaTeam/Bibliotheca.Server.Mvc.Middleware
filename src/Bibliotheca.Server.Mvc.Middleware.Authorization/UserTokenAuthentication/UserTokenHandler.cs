@@ -21,7 +21,7 @@ namespace Bibliotheca.Server.Mvc.Middleware.Authorization.UserTokenAuthenticatio
             string authorization = Request.Headers["Authorization"];
             string token = null;
 
-            if (string.IsNullOrEmpty(authorization))
+            if (string.IsNullOrWhiteSpace(authorization))
             {
                 return await Task.FromResult(AuthenticateResult.Skip());
             }
@@ -31,9 +31,14 @@ namespace Bibliotheca.Server.Mvc.Middleware.Authorization.UserTokenAuthenticatio
                 token = authorization.Substring($"{Options.AuthenticationScheme} ".Length).Trim();
             }
 
-            if (string.IsNullOrEmpty(token))
+            if (string.IsNullOrWhiteSpace(token))
             {
                 return AuthenticateResult.Skip();
+            }
+
+            if(string.IsNullOrWhiteSpace(Options.AuthorizationUrl))
+            {
+                return AuthenticateResult.Fail($"{Options.AuthenticationScheme} authentication failed. Authorization server was not specified.");
             }
 
             var user = await GetUserByTokenAsync(token);
@@ -50,7 +55,7 @@ namespace Bibliotheca.Server.Mvc.Middleware.Authorization.UserTokenAuthenticatio
                 return await Task.FromResult(AuthenticateResult.Success(ticket));
             }
 
-            return AuthenticateResult.Fail($"{Options.AuthenticationScheme} is invalid.");
+            return AuthenticateResult.Fail($"{Options.AuthenticationScheme} authentication failed. Credentials are invalid.");
         }
 
         protected override async Task<bool> HandleUnauthorizedAsync(ChallengeContext context)
@@ -69,7 +74,7 @@ namespace Bibliotheca.Server.Mvc.Middleware.Authorization.UserTokenAuthenticatio
         private async Task<UserDto> GetUserByTokenAsync(string token)
         {
             HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("UserToken", token);
+            client.DefaultRequestHeaders.Add("UserToken", token);
 
             var address = Path.Combine(Options.AuthorizationUrl, "accessToken");
             var response = await client.GetAsync(address);

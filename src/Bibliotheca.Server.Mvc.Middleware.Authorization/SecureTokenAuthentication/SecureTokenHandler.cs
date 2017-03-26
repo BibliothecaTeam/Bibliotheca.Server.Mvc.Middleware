@@ -16,7 +16,7 @@ namespace Bibliotheca.Server.Mvc.Middleware.Authorization.SecureTokenAuthenticat
             string authorization = Request.Headers["Authorization"];
             string token = null;
 
-            if (string.IsNullOrEmpty(authorization))
+            if (string.IsNullOrWhiteSpace(authorization))
             {
                 return await Task.FromResult(AuthenticateResult.Skip());
             }
@@ -26,7 +26,7 @@ namespace Bibliotheca.Server.Mvc.Middleware.Authorization.SecureTokenAuthenticat
                 token = authorization.Substring($"{Options.AuthenticationScheme} ".Length).Trim();
             }
 
-            if (string.IsNullOrEmpty(token))
+            if (string.IsNullOrWhiteSpace(token))
             {
                 return AuthenticateResult.Skip();
             }
