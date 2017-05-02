@@ -37,9 +37,10 @@ namespace Bibliotheca.Server.Mvc.Middleware.Diagnostics.Exceptions
                     throw;
                 }
 
-                if (exception is NotFoundException)
+                var bibliothecaException = exception as BibliothecaException;
+                if (bibliothecaException != null)
                 {
-                    httpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                    httpContext.Response.StatusCode = (int)bibliothecaException.StatusCode;
                 }
                 else
                 {
