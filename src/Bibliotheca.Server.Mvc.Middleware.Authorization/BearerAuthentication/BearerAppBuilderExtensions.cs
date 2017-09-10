@@ -18,7 +18,7 @@ namespace Bibliotheca.Server.Mvc.Middleware.Authorization.BearerAuthentication
             return authenticationBuilder.AddJwtBearer(options);
         }
 
-        private static IApplicationBuilder UseRewriteAccessTokenFronQueryToHeader(this IApplicationBuilder applicationBuilder)
+        public static IApplicationBuilder UseRewriteAccessTokenFronQueryToHeader(this IApplicationBuilder applicationBuilder)
         {
             applicationBuilder.Use(async (context, next) =>
             {
