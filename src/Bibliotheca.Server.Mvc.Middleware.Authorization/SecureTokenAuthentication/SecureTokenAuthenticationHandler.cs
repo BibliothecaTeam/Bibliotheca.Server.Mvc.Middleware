@@ -13,11 +13,11 @@ namespace Bibliotheca.Server.Mvc.Middleware.Authorization.SecureTokenAuthenticat
         private HttpContext _context;
         private AuthenticationScheme _scheme;
 
-        private readonly IConfiguration _configuration;
+        private readonly ISecureTokenOptions _secureTokenOptions;
 
-        public SecureTokenAuthenticationHandler(IConfiguration configuration)
+        public SecureTokenAuthenticationHandler(ISecureTokenOptions secureTokenOptions)
         {
-            _configuration = configuration;
+            _secureTokenOptions = secureTokenOptions;
         }
 
         public Task<AuthenticateResult> AuthenticateAsync()
@@ -83,7 +83,7 @@ namespace Bibliotheca.Server.Mvc.Middleware.Authorization.SecureTokenAuthenticat
 
         private bool ValidateToken(string token)
         {
-            var secureToken = _configuration[SecureTokenSchema.Name];
+            var secureToken = _secureTokenOptions.SecureToken;
             return secureToken.Equals(token, StringComparison.CurrentCultureIgnoreCase);
         }
     }

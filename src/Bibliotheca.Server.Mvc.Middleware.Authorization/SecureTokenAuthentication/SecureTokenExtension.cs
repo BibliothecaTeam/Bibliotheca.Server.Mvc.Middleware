@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -5,8 +6,15 @@ namespace Bibliotheca.Server.Mvc.Middleware.Authorization.SecureTokenAuthenticat
 {
     public static class SecureTokenExtension
     {
-        public static AuthenticationOptions AddSecureTokenAuthentication(this AuthenticationOptions authenticationOptions, IServiceCollection services)
+        public static AuthenticationOptions AddSecureTokenAuthentication(
+            this AuthenticationOptions authenticationOptions, 
+            IServiceCollection services, 
+            Action<SecureTokenOptions> optionsAction)
         {
+            var options = new SecureTokenOptions();
+            optionsAction?.Invoke(options);
+            services.AddSingleton<ISecureTokenOptions>(options);
+
             services.AddScoped<ISecureTokenAuthenticationHandler, SecureTokenAuthenticationHandler>();
 
             authenticationOptions.AddScheme(SecureTokenSchema.Name, builder => {
