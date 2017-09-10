@@ -5,7 +5,7 @@ namespace Bibliotheca.Server.Mvc.Middleware.Authorization.UserTokenAuthenticatio
 {
     public static class UserTokenExtension
     {
-        public static AuthenticationOptions AddSecureTokenAuthentication(this AuthenticationOptions authenticationOptions, IServiceCollection services)
+        public static AuthenticationOptions AddUserTokenAuthentication(this AuthenticationOptions authenticationOptions, IServiceCollection services)
         {
             services.AddScoped<IUserTokenAuthenticationHandler, UserTokenAuthenticationHandler>();
 
