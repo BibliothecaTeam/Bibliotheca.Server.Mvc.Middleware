@@ -18,7 +18,7 @@ namespace Bibliotheca.Server.Mvc.Middleware.Authorization.UserTokenAuthenticatio
 {
     public class UserTokenAuthenticationHandler : AuthenticationHandler<UserTokenOptions>
     {
-        protected UserTokenAuthenticationHandler(
+        public UserTokenAuthenticationHandler(
             IOptionsMonitor<UserTokenOptions> options, 
             ILoggerFactory logger, 
             UrlEncoder encoder, 
