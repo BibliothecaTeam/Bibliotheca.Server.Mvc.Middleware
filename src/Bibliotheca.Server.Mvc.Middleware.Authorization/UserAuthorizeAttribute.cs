@@ -9,8 +9,9 @@ namespace Bibliotheca.Server.Mvc.Middleware.Authorization
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
     public class UserAuthorizeAttribute : AuthorizeAttribute
     {
-        public UserAuthorizeAttribute() : base($"{SecureTokenSchema.Name}, {UserTokenSchema.Name}, {JwtBearerDefaults.AuthenticationScheme}")
+        public UserAuthorizeAttribute() : base()
         {
+            AuthenticationSchemes = $"{SecureTokenSchema.Name}, {UserTokenSchema.Name}, {JwtBearerDefaults.AuthenticationScheme}";
         }
     }
 }
